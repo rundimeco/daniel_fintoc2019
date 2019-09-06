@@ -1,0 +1,13 @@
+ Textual data is often described as  ``unstructured data" as opposed to structured data like databases or \textsc{Xml} data for instance. However, it is probably more accurate to describe textual data as ``computationnaly opaque" so that only the file format can be qualified structured, unstructured or semi-structured. 
+  The logical structure of natural language data is probably more important for human understanding than the syntactic structure. For instance, in press articles important information is found in the titles and subtitles, making the detection of titles important for improving web indexation \cite{Changuel-2009} or downstream NLP tasks \cite{Huttunen-2011, Daille-2016,Tkaczyk-2018}.
+  Regarding title detection task itself, \cite{Xue-2007} showed that for web pages, the size of the characters is not enough to detect titles but 
+\cite{Beel-2013} showed to the contrary that for PDF document it is the best heuristic (70\% accuracy).
+ %Other features like segment length  %
+
+ Visual and textual information can be combined to make a difference between title and non titles, as in boilerplate removal \cite{Lejeune-2018, Alarte-2019}.
+ 
+  %\textbf{TODO: improve this part, je connais pas bien l'etat de l'art}
+
+There are two main types of ToC extraction techniques: those relying on the detection of ToC pages and those relying on the book content. The ICDAR Book Structure Extraction competitions results \cite{Doucet-2013} showed that the most promising systems are hybrid ones,   \cite{Nguyen-2017} showed how combining multiple systems can lead to significant improvements in the results.
+  As in boilerplate detection and removal, geometric relations and font information form the main feature types for ToC extraction \cite{Klampfl-2014}.  
+ 

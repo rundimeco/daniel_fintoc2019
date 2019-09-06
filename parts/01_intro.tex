@@ -1,0 +1,12 @@
+Our team participated to the FinTOC-2019 Shared Task dedicated to Financial Document Structure Extraction \cite{juge2019fintoc}. We submitted results for the two sub tasks:  \emph{Title detection}, a binary classification task focusing on detecting titles in financial prospectuses, and \emph{TOC structure extraction} aiming at identifying and organizing the headers of the document according to its hierarchical structure.
+
+ Title detection and Table of Content (ToC) extraction are two important tasks for Natural Language Processing and Document Analysis, in particular in the context of digital libraries and scanned books.
+ToC extraction aims to retrieve or create a ToC in documents where the logical structure is not explicitly marked, difficult to detect or ``computationnaly opaque"~\cite{DeBusser-2006a}.
+  ToC extraction enriches the access to searchable text, in particular in the domain of digital humanities in which the texts are usually longer than in other domains involving Information retrieval (IR) and Natural language Processing (NLP).
+Rich logical structures is exploited for instance for document classification and clustering \cite{Doucet-2006a,Elhadj-2012}.
+
+ Title detection can be a preliminary task for ToC extraction since it will help to detect a page with an existing ToC or it can help to find the bricks to reconstruct the ToC. It can also help classification systems which rely on titles and text structure to detect salient information in textual data\cite{Lejeune-2015}. Salient sentences detection can as well be improved via text structure information \cite{Denil-2015}.
+ %TODO: add ref boilerplate removal
+ 
+  In section \ref{sec:soa} we will give a brief presentation of existing techniques for ToC extraction and title detection tasks. We will present our systems in section \ref{sec:meth} and discuss their results in Section \ref{sec:disc}.
+ 

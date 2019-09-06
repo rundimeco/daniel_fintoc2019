@@ -1,0 +1,114 @@
+%
+% File acl2019.tex
+%
+%% Based on the style files for ACL 2018, NAACL 2018/19, which were
+%% Based on the style files for ACL-2015, with some improvements
+%%  taken from the NAACL-2016 style
+%% Based on the style files for ACL-2014, which were, in turn,
+%% based on ACL-2013, ACL-2012, ACL-2011, ACL-2010, ACL-IJCNLP-2009,
+%% EACL-2009, IJCNLP-2008...
+%% Based on the style files for EACL 2006 by 
+%%e.agirre@ehu.es or Sergi.Balari@uab.es
+%% and that of ACL 08 by Joakim Nivre and Noah Smith
+
+\documentclass[11pt,a4paper]{article}
+\usepackage[hyperref]{acl2019}
+\usepackage{times}
+\usepackage{latexsym}
+
+\usepackage{url}
+
+\aclfinalcopy % Uncomment this line for the final submission
+%\def\aclpaperid{***} %  Enter the acl Paper ID here
+
+%\setlength\titlebox{5cm}
+% You can expand the titlebox if you need extra space
+% to show all the authors. Please do not make the titlebox
+% smaller than 5cm (the original size); we will check this
+% in the camera-ready version and ask you to change it back.
+
+\newcommand\BibTeX{B\textsc{ib}\TeX}
+
+\title{Daniel@FinTOC-2019 Shared Task : TOC Extraction and Title Detection}
+%%\hspace{-2cm} pour éviter surimpression des mails
+\author{\hspace{-2.2cm}Emmanuel Giguet \\
+  \hspace{-2.2cm}Normandie Univ, UNICAEN, \\
+  \hspace{-2.2cm} ENSICAEN, CNRS, GREYC\\
+  \hspace{-2.2cm}14000 Caen, France\\
+  \hspace{-2.2cm}\texttt{emmanuel.giguet@unicaen.fr} \\\And
+%%  ~\\\And %%Autre méthode pour éviter la surimpression --> moins joli
+  Ga\"el Lejeune \\
+  STIH, EA 4509\\
+  Sorbonne University\\
+  75006 Paris, France\\
+  \texttt{gael.lejeune@sorbonne-universite.fr} \\}
+
+%\date{}
+
+\begin{document}
+\maketitle
+\begin{abstract}
+We present different methods for the two tasks of the 2019 FinTOC challenge: Title Detection and Table of Contents Extraction.
+For the Title Detection task we present different approaches using stylometric features like punctuation and character n-grams. Our best approach achieved a F-measure score of 94.88\%, ranking 6 on this task.
+For the TOC extraction task, we presented a method combining visual characteristics of the document layout. With this method we ranked first on this task with 42.72\%.
+\end{abstract}
+
+%%NB :
+%% V1 le 2/08
+%% test set release le 5/08
+%% V2 le 10/08
+%% notification le 17/08
+%% Leaderbaord plus bas dans le doc
+\section{Introduction}
+\input{parts/01_intro}
+
+\section{State of the Art}
+\label{sec:soa}
+\input{parts/02_soa}
+
+\section{Methods and Results}
+\label{sec:meth}
+
+\subsection{TOC Extraction}
+\label{sec:TOC}
+\input{parts/03a_toc}
+
+\subsection{Title Detection}
+\label{sec:title}
+\input{parts/03b_title}
+
+\subsubsection{Results and Discussion}
+\label{sec:disc}
+\input{parts/04_concl}
+
+\section{Conclusion}
+\label{sec:conclusion}
+\input{parts/05_conclusion}
+
+%%% LEADERBOARD
+%%Subtask1: Title detection
+%%%%--------------------------------------------------
+%%Aiai_2            0.9818997315023511
+%%Aiai_1            0.9766402240293054
+%%UWB_2          0.9723895009266195
+%%FinDSE_1      0.9700572855958501
+%%FinDSE_2      0.9684006306179805
+%%UWB_1          0.9653446892789734
+%%Daniel_1         0.9488117489093626
+%%Daniel_2         0.9417339436713312
+%%YseopLab_1    0.9124937810249167
+%%YseopLab_2    0.9113421072180891
+%%
+%%
+%%Subtask2: TOC generation
+%%%%----------------------------------------------------
+%%Daniel_1          0.4272235845712835
+%%IHSMarkit_1     0.39418792730119045
+%%IHSMarkit_2     0.38826468863229924
+
+\bibliography{acl2019}
+\bibliographystyle{acl_natbib}
+
+
+
+\end{document}
