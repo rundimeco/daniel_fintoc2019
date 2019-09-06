@@ -71,6 +71,24 @@ Heading numbering may be prefixed by a functional term, such as Appendix, Chapte
 
 In our process, the computation of the hierarchical structure is based on the combination of subheading indentation and multi-level numbering structure of ToC entries.
 
+\subsubsection{Computing the PDF Page Numbers}
+
+Once the ToC is built, each header is associated to a page
+number. This page number refers to the print version. The PDF page
+number we have to submit is slightly different: a page shift may
+appear if the first page of the PDF is not numbered ``page 1''. It is the
+case when the document contains a title page, which might be not
+numbered, or includes preliminary pages which might also be not numbered or might
+use a different numbering alphabet.
+
+In order to get the appropriate PDF page numbers, we choose to compute the shift
+between PDF page numbers and printed page numbers. In order to
+extract printed page numbers, we select a sample of PDF pages. We then
+look for a series of integers located at the same position on
+different pages. Once we found this series, we get the page shift by calculating
+the difference between the first printed page number of the series and its
+corresponding PDF page number.
+
 \subsubsection{Results and discussion}
 
 The results of our system \texttt{Daniel} on the test set are given in table \ref{res:toc}.   
