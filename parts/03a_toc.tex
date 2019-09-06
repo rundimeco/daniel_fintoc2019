@@ -73,7 +73,7 @@ In our process, the computation of the hierarchical structure is based on the co
 
 \subsubsection{Results and discussion}
 
-The preliminary results of our system \texttt{Daniel} on the test set are given in table \ref{res:toc}.   
+The results of our system \texttt{Daniel} on the test set are given in table \ref{res:toc}.   
 
 \begin{table}
 \begin{tabular}{l|l|r}
@@ -84,6 +84,32 @@ The preliminary results of our system \texttt{Daniel} on the test set are given 
 \caption{Results for the ToC Generation Task on the test set}
 \label{res:toc}
 \end{table}
+
+The detailed results of our system are given in table \ref{res:detail}.
+As expected, the system always has a good precision and a lower recall.
+We point out that low precision for book 2 is due to the fact that
+the ToC of the prospectus is more detailed than the ToC of the groundtruth.
+
+\begin{table}
+\begin{tabular}{l|r|r|r|r|l}
+  \multicolumn{4}{c}{Xrx-measure Links}  &  Title & \\
+ Doc &  Prec & Rec. &    F1 &  acc.  & book id      \\\hline
+   0 &  97.7 & 48.6 &  64.9 &  84.5  & lu1252823262-\\\hline
+   1 &  87.2 & 51.9 &  65.1 &  96.5  & lu1139920265-\\\hline
+   2 &  22.2 & 40.0 &  28.6 &  91.9  & lu0881817786-\\\hline
+   3 &  90.5 & 12.3 &  21.7 &  85.7  & lu1150262910-\\\hline
+   4 & 100.0 & 10.4 &  18.9 &  42.4  & lu0992626050-\\\hline
+   5 &  83.3 &  2.9 &   5.6 &  59.7  & lu0949250459-\\\hline
+   6 & 100.0 & 12.4 &  22.1 &  94.6  & lu1151059737-\\\hline
+\end{tabular}
+\caption{Results for the ToC Generation Task on the test set}
+\label{res:detail}
+\end{table}
+
+Good precision and low recall are linked to our method which is based on
+locating and parsing the ToCs. ToCs does not reflect the true structure of the prospectuses. 
+They are generally less detailed: lower level headers are not included. Moreover, 
+if no ToC is present or found, the system relies on a simple fallback.
 
 Due to lack of time for implementation, we only handled ToC located on one-column page layout, which is the most common case for this kind of document. We did not handle the difference of page format for odd and even pages. Simple improvements can be done to cover these two cases.
 
