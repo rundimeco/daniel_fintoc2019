@@ -1,23 +1,21 @@
 
  %%For the title detection task, we propose to use character n-gram features.
  
-Obviously, the first feature one can think about is the length of the segment, titles are shorter segments and are seldom longer than a line. %% Here : graph with length
- The second feature that came to our mind is that titles are much more likely to be nonverbal sentences and in general exhibit a simpler syntactical structure.
-Other features like the one given in the train and test sets can be useful: begins with numbering, material aspect (bold/italic), capitalization (begin with capitals, all\_caps). 
- We advocate that these differences are related to style, therefore the different baselines and systems we propose rely on stylistic features.
- 
- The set of baselines we experimented relies on the basic set of features given with the dataset and we added other set of features:
+ The very first feature one can think about is the length of the segment, titles are shorter segments and are seldom longer than a line. %% Here : graph with length
+ The second feature that came to our mind is that titles are likely to be nonverbal sentences and in general exhibit a simpler syntactical structure.
+Other features like those provided with the dataset can be useful: begins with numbering, material aspect (bold/italic), capitalization (begin with capitals, all\_caps). 
+ We advocate that these differences are related to style, therefore the different baselines and systems we propose rely on stylistic features. 
+ We used the basic set of features given with the dataset and we added three other types of features:
   
   \begin{description}
-\item[basic features]: The features provided in the training set (Begins with Numbering, Is Bold, Is Italic, Is All Caps, begin With Cap, Page Number)
+\item[basic features]: Provided in the dataset (Begins with Numbering, Is Bold, Is Italic, Is All Caps, begin With Cap, Page Number)
 \item[length] The length of the segment in characters
-\item[stylo] Relative frequency of each punctuation sign, proportion of numbers, proportion of capitalized letters
+\item[stylo] Relative frequency of each punctuation sign, numbers and capitalized letters
   \end{description}
   
-   Our other approach relies on classical stylometric character based features, used in particular in autorship attribution \cite{Brixtel-2015}. We chose character n-grams because of their simplicity to compute. We try different possible values of $n$: $n_{min} \leq n \leq n_{max}$ with all possible $n_{min}$ and $n_{max}$ values between 1 and 10 (and $n_{min}\leq n_{max}$).
-   We computed a relative frequency for each n-gram in each text to classify in order to take into account the various size of the blocks. In fact, with absolute frequencies the results were significantly worse.
-  
-For all these methods we will only report results obtained with the Multinomial Naive Bayes (MNB) and the DT10 classifier since other classifiers did not offer better results than the DT10. For instance SVM with various kernels were more computationaly intensive and in some cases had difficulties to converge.
+   Our other approach relies on character based features, used in particular in autorship attribution \cite{Brixtel-2015}. We chose character n-grams because of their simplicity to compute. We try different possible values of $n$: $n_{min} \leq n \leq n_{max}$ with all possible $n_{min}$ and $n_{max}$ values between 1 and 10 (and $n_{min}\leq n_{max}$).
+   We computed a relative frequency for each n-gram in each example to classify in order to take into account their various size. In fact, with absolute frequencies the results were significantly worse.  
+We will only report results obtained with the Multinomial Naive Bayes (MNB) and the DT10 classifier since other classifiers did not offer better results than the DT10. SVM (with linear and non-linear kernels) had difficulties to converge with our baseline features due to their insufficent number.
   
  In order to evaluate our methods and baselines we performed for each of them a ten-fold cross validation on the train set.
 The results on the train and test set are presented in Table \ref{tab:results_title_MNB} for the MNB classifier and Table \ref{tab:results_title_DT10} for the DT10 classifier. % \footnote{Note for the reviewers: up to now we have not received the labels of the test data so that some figures are missing in the tables but we hope that we will have it for the camera-ready version.}.
@@ -27,7 +25,7 @@ The results on the train and test set are presented in Table \ref{tab:results_ti
 \end{table}
  The first thing one can see is that the DT10 classifier outperforms the MNB in particular because the MNB classifier is not better with the stylometric features.
 The baselines with stylometric features worked well and our first submission was but the best method on the training data was the n-gram method (with $1\leq n \leq 3$). However, we chose to submit the classifier trained with with $1\leq n \leq 4$ because we believed it would be less prone to overfitting.
-With $n_{min}>1$ or $n_{max}>4$ the results drop significantly.
+With $n_{min}>1$ or $n_{max}>5$ the results drop significantly.
  
 
   What we did not expect is that our best baseline performed much better on the test-set and was even better than our other submission. However, it is very interesting result since our experiments on the train set seemed to show that 1-grams were sufficient to build a reasonably efficient classifier.
