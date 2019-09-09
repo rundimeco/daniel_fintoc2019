@@ -1,0 +1,13 @@
+TITLE DETECTION
+
+You need to have the CSV data for the fin_toc shared task
+
+use prepare_data.py to transform the csv files :
+Run:
+python prepare_data.py shared_task_1.train.csv 
+
+then:
+python prepare_data.py shared_task_1.test.csv
+
+Now you can start the classification :
+$ python simple_character_model.py -v 
