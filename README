@@ -1,13 +1,44 @@
-TITLE DETECTION
+Usage : 
+  use_model.py
+    the predict_title function takes as input a python dictionary with the following informations:
+      "text_line" : text line to be classified (String, mandatory)
+      "begins_with_numbering" : 0 or 1 (not mandatory)
+      "is_italic": 0 or 1 (not mandatory)
+      "is_all_caps" : 0 or 1 (not mandatory)
+      "begins_with_cap" : 0 or 1 (not mandatory)
+      "page_nb" : integer (not mandatory)
+   returns a title probability  
 
-You need to have the CSV data for the fin_toc shared task
+TIT :
+run1 1,3 simple DT10 (run1)
+run2 baseline 5 (run2)
+run3 1,4 simple DT10
 
-use prepare_data.py to transform the csv files :
-Run:
-python prepare_data.py shared_task_1.train.csv 
 
-then:
-python prepare_data.py shared_task_1.test.csv
+July 20, 2019: system results due to participants
+July 27, 2019: shared task system papers due
+Aug 10, 2019: reviews due
+Aug 17, 2019: notification of acceptance
+Aug 24, 2019: camera ready version of shared task system papers due
+Sep 30, 2019: Workshop day
 
-Now you can start the classification :
-$ python simple_character_model.py -v 
+Classement
+
+Subtask1: Title detection
+---------------------------------------------------
+Aiai_2            0.9818997315023511
+Aiai_1            0.9766402240293054
+UWB_2          0.9723895009266195
+FinDSE_1      0.9700572855958501
+FinDSE_2      0.9684006306179805
+UWB_1          0.9653446892789734
+Daniel_1         0.9488117489093626
+Daniel_2         0.9417339436713312
+YseopLab_1    0.9124937810249167
+YseopLab_2    0.9113421072180891
+
+
+Subtask2: TOC generation
+-----------------------------------------------------
+Daniel_1          0.4272235845712835
+IHSMarkit_1     0.39418792730119045
