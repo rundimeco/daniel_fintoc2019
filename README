@@ -7,7 +7,10 @@ Usage :
       "is_all_caps" : 0 or 1 (not mandatory)
       "begins_with_cap" : 0 or 1 (not mandatory)
       "page_nb" : integer (not mandatory)
-   returns a title probability  
+   returns a triplet :
+     Model name
+     Class predicted
+     Title probability  
 
 TIT :
 run1 1,3 simple DT10 (run1)

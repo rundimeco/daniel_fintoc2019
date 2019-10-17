@@ -32,12 +32,12 @@ def predict_title(data):
   filename = "models/%s"%choose_model(BL_model)
   loaded_model = pickle.load(open(filename, 'rb'))
   is_title = loaded_model.predict_proba([x])[0][1]
-  results.append([BL_model, is_title])
-
+  y_pred = loaded_model.predict([x])[0]
+  results.append([BL_model, y_pred, is_title])
   return results
 
 if __name__=="__main__":
-  for text in ["Introduction", "Conclusion", "BOARD DIRECTORS", "Imamd test, échec. "*25]:
+  for text in ["Introduction", "Conclusion", "BOARD DIRECTORS", "Imamd test, échec. "*25, "IMPORTANT INFORMATION", "TABLE OF CONTENTS", "1. Representative and Paying Agent in Switzerland"]:
     data = {"text_line": text}
     print(text[:20])
     for item in predict_title(data):
