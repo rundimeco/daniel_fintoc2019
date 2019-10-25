@@ -13,7 +13,7 @@ attributes = ["text_line", "begins_with_numbering", "is_bold", "is_italic", "is_
 for cpt, l in enumerate(lines[1:]):
   elems = re.split("\t", re.sub("\n", "", l))
   infos = {attributes[i]: elems[i] for i in range(len(attributes))}
-
+  dic[cpt] = infos
 w = open("%s.json"%data_csv, "w")
 w.write(json.dumps(dic, indent = 2))
 w.close()
