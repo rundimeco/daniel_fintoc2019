@@ -1,3 +1,18 @@
+#######################################
+   parse_json_ref_title_detection.py
+#######################################
+
+Ce programme permet uniquement de transformer un fichier json sous forme de résultat d'un modèle, comme:
+	instance 	label
+
+Dans le terminal, il suffit d'entrer :
+python3 parse_json_ref_title_detection.py chemin/vers/json/file
+
+
+##################
+   evaluate.py
+##################
+
 Pour utiliser le programme evaluate.py, il faut disposer du :
 - $REF$ : chemin d'accès au fichier contenant la référence ;
 - $TEST_DIR$ : chemin d'accès au répertoire contenant tous les résultats des modèles à tester.
