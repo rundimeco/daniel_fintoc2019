@@ -18,8 +18,11 @@ parse_json_ref_title_detection.py
 =================================
 
 Ce programme permet uniquement de transformer un fichier .json sous forme de résultat d'un modèle, comme:
+
 	instance1 	label1
+
 	...			...
+
 	instanceN	labelN
 
 Dans le Terminal, il suffit d'entrer :
