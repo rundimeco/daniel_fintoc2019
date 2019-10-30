@@ -21,7 +21,7 @@ Ce programme permet uniquement de transformer un fichier .json sous forme de ré
 
 	instance1 	label1
 
-	...			...
+	...		...
 
 	instanceN	labelN
 
