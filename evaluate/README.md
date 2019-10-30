@@ -1,3 +1,19 @@
+Description des éléments présents dans le dossier
+=================================================
+
+- ./test_set_with_labels/ : il s’agit du jeu de test labellisé par les modèles (et la référence)
+- ./res_evaluation/ : résultat des évaluations (selon les méthodes) :
+	- les faux négatifs par modèle ;
+	- les faux négatifs de tous les modèles ;
+	- un tableau rassemblant les précision, rappel et f-mesure (un tableau = une méthode)
+- ./venn/ : images de certains diagrammes de Venn
+- parse_json_ref_title_detection.py —> script qui permet de transformer le json rassemblant le jeu de test labellisé dans un format similaire aux sorties de tes modèles (instance_id  tabulation  label)
+- evaluate.py —> script qui permet de générer les résultats rangés dans ./res_evaluation/ (pour le lancer : voir ci-après)
+- generate_venn.py —> script qui permet de faire des diagrammes de Venn (de 3 à 6 dimensions) (pour le lancer : voir ci-après)
+- venn.py —> script pour faire à proprement les diagrammes de Venn, trouvé ici : https://github.com/tctianchi/pyvenn/blob/master/venn.py
+
+
+
 parse_json_ref_title_detection.py
 =================================
 
