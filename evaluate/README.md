@@ -52,9 +52,10 @@ Pour utiliser le programme evaluate.py, il faut disposer de :
 - les noms des modèles à afficher sur le diagramme 
 - le caracètre de séparation des instances dans les fichiers contenant les résultats des modèles
 - le label que l'on souhaite représenter
+- le nombre de dimensions du diagramme (= le nombre de cercles)
 
-Par exemple : ```python3 generate_venn.py "./models/m1.txt,./models/m2.txt,./models/m3.txt" "Model 1, Model 2, Model 3" \\t 1```
-(Ici, le caractère de séparation est une tabulation et le label est "1".)
+Par exemple : ```python3 generate_venn.py "./models/m1.txt,./models/m2.txt,./models/m3.txt" "Model 1, Model 2, Model 3" \\t 1 3```
+(Ici, le caractère de séparation est une tabulation, le label est "1" et le diagramme comporte 3 dimensions.)
 
 generate_upset_plot.py
 ======================
