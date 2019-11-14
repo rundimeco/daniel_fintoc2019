@@ -19,8 +19,8 @@ def get_id_instances_title(filename, sep, label):
 	while line != '':
 		elm = line.strip().split(sep)
 		id_ = elm[0]
-		label = elm[1]
-		if label == label:
+		l = elm[1]
+		if l == label:
 			ids.append(id_)
 		line = infile.readline()
 	infile.close()
@@ -45,6 +45,7 @@ def generate_venn_diagram(nb_dim, files, names, sep, label):
 			i += 1
 
 		labels = venn.get_labels(models)
+		print(labels)
 		if nb_dim == 2:
 			fig, ax = venn.venn2(labels, names=names)
 			plt.show()
@@ -77,8 +78,8 @@ if __name__ == '__main__':
 	else:
 		sep = '\t'
 	label = sys.argv[4]
-	
-	generate_venn_diagram(nb_dim=4, files=files, names=names, sep=sep, label=label)
+	nb_dim = sys.argv[5]
+	generate_venn_diagram(nb_dim=int(nb_dim), files=files, names=names, sep=sep, label=label)
 
 
 
