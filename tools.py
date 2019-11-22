@@ -31,6 +31,33 @@ def get_args():
   (options, args) = parser.parse_args()
   return options
 
+def get_args_rstr():
+  from optparse import OptionParser
+  parser = OptionParser()
+  parser.add_option("-o", "--output_dir", dest="output_dir",
+      default = "results_simple",
+                  help="Output for prediction results", metavar="OUTPUT")
+  parser.add_option("-m", "--mode", dest="mode",
+                  default = "matrix_generation",
+                  help="Choose 'matrix_generation' (-o and -t are needed) or 'learn_n_test' (-o, -t, -T, -M are needed).")
+  parser.add_option("-t", "--train", dest="train",
+      default = "json_files/TITLE_train.csv.json",
+                  help="train data folder", metavar="DATA")
+  parser.add_option("-T", "--test", dest="test", 
+      default = "json_files/TITLE_test.csv.json",
+                  help = "test data folder")
+  parser.add_option("-v", "--verbose",
+                   action="store_true", dest="verbose", default=False,
+                   help="print status messages to stdout")
+  parser.add_option("-F", "--force",
+                   action="store_true", dest="force", default=False,
+                   help="Force redoing already done experiments")
+  parser.add_option("-M", "--matrix",
+                   dest="matrix", default=None,
+                   help="Path to the rstr matrix (considered as a non supervised tokenizer)")
+  (options, args) = parser.parse_args()
+  return options
+
 def get_args_BL():
   from optparse import OptionParser
   parser = OptionParser()
