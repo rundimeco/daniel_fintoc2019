@@ -13,7 +13,8 @@ from sklearn import svm
 from sklearn.tree import DecisionTreeClassifier 
 from sklearn import neighbors
 from sklearn.neural_network import MLPClassifier
-from scipy import sparse
+from numpy import array
+import scipy.sparse as sp
 import json
 import numpy as np
 import pickle
@@ -38,7 +39,7 @@ def get_matrix_rstr(json_path):
     X.append({})
   r = rstr.go()
   cpt_str=0
-  l_str = []
+  l_str, desc = [], []
   for (offset_end, nb), (l, start_plage) in r.items():
     ss = rstr.global_suffix[offset_end-l:offset_end]
     l_str.append(ss)
@@ -50,38 +51,69 @@ def get_matrix_rstr(json_path):
       for id_text in set_occur:
         X[id_text].setdefault(cpt_str, 0)
         X[id_text][cpt_str]+=1
+    if len(ss)<7 and len(set_occur)>100 and len(set_occur)<0.6*len(texts):
+      desc.append(ss)
     cpt_str +=1
-  return l_str, X 
+  print(str(len(l_str)))
+  print(str(len(desc)))
+  return l_str, desc, X 
 
 def vector_rstr(infos, m_tokens):
   txt = infos["text_line"]
   vec = []
   for token in m_tokens:
     vec.append(txt.count(token))
-  return sparse.csr_matrix(np.array(vec))
+  return vec
 
 
-def prepare_data(json_path, m_tokens):
+def update_X(X, infos, desc): 
+  if len(X.keys()) != 0: # Si le dictionnaire n'est pas vide...
+    id_cpt = max(X.keys()) + 1
+  else:
+    id_cpt = 0
+
+  X[id_cpt] = {}
+  txt = infos["text_line"]
+  for d in desc:
+    if d in txt:
+      X[id_cpt][desc.index(d)] = txt.count(d)
+  return X
+
+def transform_dic_into_sparce_matrix(dic_X, nb_instances, nb_dim):
+  mat = sp.dok_matrix((nb_instances,nb_dim))
+  for instance in dic_X.keys():
+    for d in dic_X[instance].keys():
+      mat[instance, d] = dic_X[instance][d]
+  mat = mat.transpose().tocsr()
+  return mat
+
+
+def prepare_data(json_path, desc):
   dic_json = open_json(json_path)
-  texts = [infos["text_line"] for x, infos in dic_json.items()]
-  X, y , L_IDS = [], [], []
+  X = {}
+  y, L_IDS = [], []
   for ID, infos in dic_json.items():
-    X.append(vector_rstr(infos, m_tokens)) # X.append()
+    X = update_X(X, infos, desc)
+    # Transform X into sparse matrix
     y.append(infos["label"])
     L_IDS.append(ID)
-  return X, y, L_IDS
+  mat = transform_dic_into_sparce_matrix(X, len(dic_json.items()), len(desc))
+  return X, y, L_IDS, mat
+
 
 def vectorize(options):
   if options.verbose==True:  print(options)
   # Création des ensembles de train et de test
   dic_out = {"train":{}, "test":{}}
-  desc = {}
-  matrix = {}
-  m_tokens, matrix = pickle.load(open(options.matrix, 'rb'))
-  X_train, y_train, IDs_train = prepare_data(json_path=options.train, m_tokens=m_tokens)
-  X_test, y_test, IDs_test = prepare_data(json_path=options.test, m_tokens=m_tokens)
+  m_tokens, desc, matrix = pickle.load(open(options.matrix, 'rb'))
+  X_train, y_train, IDs_train, mat_train = prepare_data(json_path=options.train, desc=desc)
+  X_test, y_test, IDs_test, mat_test = prepare_data(json_path=options.test, desc=desc)
+  
+  # On sauve les résultats pour le pas avoir à le refaire à chaque fois... Car très long.
+  pickle.dump((X_train, y_train, IDs_train, mat_train), open(options.output_dir + 'data_train.pickle', 'wb'))
+  pickle.dump((X_test, y_test, IDs_test, mat_test), open(options.output_dir + 'data_test.pickle', 'wb'))
 
-  """
+ 
   # On récupère les classifieurs à utiliser (ils sont instanciés dans la fonction get_liste_classif())
   liste_classif = get_liste_classif()
   # Cross-validation
@@ -116,11 +148,12 @@ def vectorize(options):
     write_utf8(out_name, (y_pred_out))
     print("Acc. (cross-valid)\t: %f"%accuracy)
     print("Acc. (test)\t\t: %f"%(score_test))
-  """
+
+
 if __name__ == "__main__":    
 	options = get_args_rstr() # Parse des arguments
 	if options.mode == 'matrix_generation':
-		m_tokens, matrix = get_matrix_rstr(options.train)
-		pickle.dump((m_tokens, matrix), open(options.output_dir + 'matrix.pickle', 'wb'))
+		m_tokens, desc, matrix = get_matrix_rstr(options.train)
+		pickle.dump((m_tokens, desc, matrix), open(options.output_dir + 'matrix.pickle', 'wb'))
 	else:
 		vectorize(options) # Appel de la fonction principale avec les options demandées en ligne de commande
