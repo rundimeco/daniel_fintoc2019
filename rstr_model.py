@@ -29,8 +29,7 @@ def get_liste_classif():
 # ["GNB", GaussianNB()],
   ]
 
-def get_matrix_rstr(json_path):
-  dic_json = open_json(json_path)
+def get_matrix_rstr(dic_json, desc=None):
   texts = [infos["text_line"] for x, infos in dic_json.items()]
   rstr = Rstr_max()
   X = [] 
@@ -38,82 +37,53 @@ def get_matrix_rstr(json_path):
     rstr.add_str(s)
     X.append({})
   r = rstr.go()
-  cpt_str=0
-  l_str, desc = [], []
+  cpt_str = 0
+  desc = []
   for (offset_end, nb), (l, start_plage) in r.items():
     ss = rstr.global_suffix[offset_end-l:offset_end]
-    l_str.append(ss)
-    set_occur = set()
+    list_occur =[]
     for o in range(start_plage, start_plage+nb) :
       id_text = rstr.idxString[rstr.res[o]]
-      set_occur.add(id_text)
-    if len(set_occur)>1:
-      for id_text in set_occur:
-        X[id_text].setdefault(cpt_str, 0)
-        X[id_text][cpt_str]+=1
-    if len(ss)<7 and len(set_occur)>100 and len(set_occur)<0.6*len(texts):
-      desc.append(ss)
-    cpt_str +=1
-  print(str(len(l_str)))
-  print(str(len(desc)))
-  return l_str, desc, X 
-
-def vector_rstr(infos, m_tokens):
-  txt = infos["text_line"]
-  vec = []
-  for token in m_tokens:
-    vec.append(txt.count(token))
-  return vec
+      print(id_text)
+      list_occur.append(id_text)
+    set_occur = set(list_occur)
+    if desc is not None:  # Test
+      if ss not in desc:
+        continue
+    if len(set_occur) > 1:
+      if len(ss) < 7 and len(set_occur) < 0.6*len(texts):
+        for id_text in list_occur:
+          X[id_text].setdefault(cpt_str, 0)
+          X[id_text][cpt_str] += 1
+        desc.append(ss)
+        cpt_str += 1
+  return desc, matrix
 
 
-def update_X(X, infos, desc): 
-  if len(X.keys()) != 0: # Si le dictionnaire n'est pas vide...
-    id_cpt = max(X.keys()) + 1
-  else:
-    id_cpt = 0
-
-  X[id_cpt] = {}
-  txt = infos["text_line"]
-  for d in desc:
-    if d in txt:
-      X[id_cpt][desc.index(d)] = txt.count(d)
-  return X
-
-def transform_dic_into_sparce_matrix(dic_X, nb_instances, nb_dim):
-  mat = sp.dok_matrix((nb_instances,nb_dim))
-  for instance in dic_X.keys():
-    for d in dic_X[instance].keys():
-      mat[instance, d] = dic_X[instance][d]
-  mat = mat.transpose().tocsr()
-  return mat
-
-
-def prepare_data(json_path, desc):
+def prepare_data(json_path, desc=None):
   dic_json = open_json(json_path)
   X = {}
+  if desc == None: # Corpus train
+    desc, matrix = get_matrix_rstr(dic_json)
+  else: # corpus test
+    _, matrix = get_matrix_rstr(dic_json, desc)
+
+  v = DictVectorizer()
+  X = v.fit_transform(matrix)
   y, L_IDS = [], []
   for ID, infos in dic_json.items():
-    X = update_X(X, infos, desc)
-    # Transform X into sparse matrix
     y.append(infos["label"])
     L_IDS.append(ID)
-  mat = transform_dic_into_sparce_matrix(X, len(dic_json.items()), len(desc))
-  return X, y, L_IDS, mat
-
+  return X, y, L_IDS, desc
 
 def vectorize(options):
   if options.verbose==True:  print(options)
   # Création des ensembles de train et de test
   dic_out = {"train":{}, "test":{}}
-  m_tokens, desc, matrix = pickle.load(open(options.matrix, 'rb'))
-  X_train, y_train, IDs_train, mat_train = prepare_data(json_path=options.train, desc=desc)
-  X_test, y_test, IDs_test, mat_test = prepare_data(json_path=options.test, desc=desc)
-  
-  # On sauve les résultats pour le pas avoir à le refaire à chaque fois... Car très long.
-  pickle.dump((X_train, y_train, IDs_train, mat_train), open(options.output_dir + 'data_train.pickle', 'wb'))
-  pickle.dump((X_test, y_test, IDs_test, mat_test), open(options.output_dir + 'data_test.pickle', 'wb'))
 
- 
+  X_train, y_train, IDs_train, desc_t = prepare_data(json_path=options.train)
+  X_test, y_test, IDs_test, _ = prepare_data(json_path=options.test, desc=desc_t)
+
   # On récupère les classifieurs à utiliser (ils sont instanciés dans la fonction get_liste_classif())
   liste_classif = get_liste_classif()
   # Cross-validation
@@ -132,7 +102,7 @@ def vectorize(options):
       continue
 
     # Accuracy sur l'ensemble TRAIN en cross validation
-    accuracy = np.mean(cv_score(OBJ, X_train,y=y_train, cv=skf, n_jobs=2))
+    accuracy = np.mean(cv_score(OBJ, X_train, y=y_train, cv=skf, n_jobs=2))
 
     # Apprentissage du classifieur sur le TRAIN et métrique sur le TEST
     model = OBJ.fit(X_train, y_train) # apprentissage
@@ -153,7 +123,11 @@ def vectorize(options):
 if __name__ == "__main__":    
 	options = get_args_rstr() # Parse des arguments
 	if options.mode == 'matrix_generation':
-		m_tokens, desc, matrix = get_matrix_rstr(options.train)
+		m_tokens, desc, matrix = get_matrix_rstr_train(options.train)
 		pickle.dump((m_tokens, desc, matrix), open(options.output_dir + 'matrix.pickle', 'wb'))
 	else:
 		vectorize(options) # Appel de la fonction principale avec les options demandées en ligne de commande
+
+# A FAIRE
+# fichier d'options
+
