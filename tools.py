@@ -37,9 +37,6 @@ def get_args_rstr():
   parser.add_option("-o", "--output_dir", dest="output_dir",
       default = "results_simple",
                   help="Output for prediction results", metavar="OUTPUT")
-  parser.add_option("-m", "--mode", dest="mode",
-                  default = "matrix_generation",
-                  help="Choose 'matrix_generation' (-o and -t are needed) or 'learn_n_test' (-o, -t, -T, -M are needed).")
   parser.add_option("-t", "--train", dest="train",
       default = "json_files/TITLE_train.csv.json",
                   help="train data folder", metavar="DATA")
@@ -52,9 +49,13 @@ def get_args_rstr():
   parser.add_option("-F", "--force",
                    action="store_true", dest="force", default=False,
                    help="Force redoing already done experiments")
-  parser.add_option("-M", "--matrix",
-                   dest="matrix", default=None,
-                   help="Path to the rstr matrix (considered as a non supervised tokenizer)")
+  parser.add_option("-l", "--lenmax",
+                   dest="lenmax", default=7,
+                   help="Length of the substring considered ad a descriptor")
+  parser.add_option("-s", "--supportmax",
+                   dest="supportmax", default=0.6,
+                   help="Support size (between 0 and 1)")
+
   (options, args) = parser.parse_args()
   return options
 
@@ -127,10 +128,25 @@ def format_name(train_name, test_name):
   test_name = re.split("/", test_name)[-1]
   return "%s--%s"%(train_name, test_name)
 
+def format_name_rstr(options):
+  train_name = re.split("/", options.train)[-1]
+  test_name = re.split("/", options.test)[-1]
+  lenmax = options.lenmax
+  supportmax = options.supportmax
+  return "%s--%s___lenmax=%s,supportmax=%s"%(train_name, test_name, lenmax, supportmax)
+
 def open_json(path):
   f = open(path)
   data = json.load(f)
   f.close()
+  '''
+  d = {}
+  cpt = 0
+  for elm in data.items():
+    d[elm[0]] = elm[1]
+    cpt += 1
+    if cpt > 1500:
+      break'''
   return data
 
 def get_score(y_test, y_pred):
