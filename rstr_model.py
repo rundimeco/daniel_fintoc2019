@@ -139,7 +139,7 @@ def vectorize(options):
 		score_test = get_score(y_test, y_pred)
 		if options.verbose==True: 
 			print(out_name)
-		y_pred_out = format_output(IDs_test, y_pred)
+		y_pred_out = format_output(IDs_test, y_pred[0:len(y_pred)-1])
 
 		# Ecriture et affichage des performances du modèle
 		file_res = io.open(path_test_set, mode='w', encoding='utf-8')
