@@ -1,0 +1,54 @@
+----------MNB----------
+Acc. (cross-valid)	: 0.669094
+Acc. (test)		: 0.652426
+----------DT10----------
+Acc. (cross-valid)	: 0.890024
+Acc. (test)		: 0.880138
+----------MNB----------
+Acc. (cross-valid)	: 0.742468
+Acc. (test)		: 0.189310
+----------DT10----------
+Acc. (cross-valid)	: 0.891783
+Acc. (test)		: 0.780252
+----------MNB----------
+Acc. (cross-valid)	: 0.753165
+Acc. (test)		: 0.139029
+----------DT10----------
+Acc. (cross-valid)	: 0.891822
+Acc. (test)		: 0.938922
+----------MNB----------
+Acc. (cross-valid)	: 0.749027
+Acc. (test)		: 0.067962
+----------DT10----------
+Acc. (cross-valid)	: 0.891928
+Acc. (test)		: 0.940069
+----------MNB----------
+Acc. (cross-valid)	: 0.745655
+Acc. (test)		: 0.235000
+----------DT10----------
+Acc. (cross-valid)	: 0.893449
+Acc. (test)		: 0.940069
+----------MNB----------
+Acc. (cross-valid)	: 0.744756
+Acc. (test)		: 0.175677
+----------DT10----------
+Acc. (cross-valid)	: 0.892153
+Acc. (test)		: 0.940069
+----------MNB----------
+Acc. (cross-valid)	: 0.744214
+Acc. (test)		: 0.156307
+----------DT10----------
+Acc. (cross-valid)	: 0.892087
+Acc. (test)		: 0.940069
+----------MNB----------
+Acc. (cross-valid)	: 0.744135
+Acc. (test)		: 0.119727
+----------DT10----------
+Acc. (cross-valid)	: 0.892536
+Acc. (test)		: 0.940069
+----------MNB----------
+Acc. (cross-valid)	: 0.746039
+Acc. (test)		: 0.092326
+----------DT10----------
+Acc. (cross-valid)	: 0.892272
+Acc. (test)		: 0.940069

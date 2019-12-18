@@ -160,4 +160,4 @@ if __name__ == "__main__":
 
 
 	# 3. Écriture des faux négatifs
-	#Write_FN_FP_VP(results=results, ref_name=ref_results_name)	
+	Write_FN_FP_VP(results=results, ref_name=ref_results_name)	
