@@ -16,6 +16,7 @@ from sklearn.neural_network import MLPClassifier
 from numpy import array
 import scipy.sparse as sp
 import json
+import math
 import io
 import numpy as np
 import pickle
@@ -29,6 +30,37 @@ def get_liste_classif():
 # ["Svm-C1L", svm.SVC(kernel='linear')] 
 # ["GNB", GaussianNB()],
 	]
+
+def get_total_counts(options, X):
+	dic = {}
+	for (id_text, obs) in X.items():
+		for (ss_id, count) in obs.items():
+			if ss_id not in dic.keys():
+				dic[ss_id] = (count, 1)
+			else:
+				dic[ss_id][0] += count
+				dic[ss_id][1]
+	return dic
+
+def compute_tf_if(total_counts, ss_id, count, X):
+	tf = count/total_counts[ss_id]
+	idf = math.log(len(X.keys()/total_counts[ss_id][1]), 10)
+	return tf*idf
+
+def transform_X_with_total_counts(options, X, total_counts):
+	relative_X = {}
+	for (id_text, obs) in X.items():
+		for (ss_id, count) in obs.items():
+			relative_X[id_text].setdefault(ss_id, 0)
+			if options.tfidf == True:
+				relative_X[id_text][ss_id] = compute_tf_if(total_counts, ss_id, count, X)
+			else:
+				relative_X[id_text][ss_id] = count/total_counts[ss_id]
+	return relative_X
+
+def relative_transformation(options, X):
+	total_counts = get_total_counts(X)
+	relative_X = transform_X_with_total_counts(X, total_counts)
 
 def get_matrix_rstr(options, dic_json, desc_arg=None):
 	texts = [infos["text_line"] for x, infos in dic_json.items()]
@@ -72,7 +104,8 @@ def get_matrix_rstr(options, dic_json, desc_arg=None):
 		dic[descriptors.index(d)] = 1
 	X.append(dic)
 
-	# --------------------> Ici qu'il faut intervenir pour changer les valeurs de la matrice en tf-idf ou Okapi.
+	if options.relative == True:
+		X = relative_transformation(options, X)
 
 	return desc, X
 
