@@ -31,6 +31,27 @@ def get_args():
   (options, args) = parser.parse_args()
   return options
 
+def get_args_ngrams_pos():
+  from optparse import OptionParser
+  parser = OptionParser()
+  parser.add_option("-t", "--train", dest="train",
+      default = "json_files/TITLE_train.csv.json",
+                  help="train data folder", metavar="DATA")
+  parser.add_option("-T", "--test", dest="test", 
+      default = "json_files/TITLE_test.csv.json",
+                  help = "test data folder")
+  parser.add_option("-v", "--verbose",
+                   action="store_true", dest="verbose", default=False,
+                   help="print status messages to stdout")
+  parser.add_option("-F", "--force",
+                   action="store_true", dest="force", default=False,
+                   help="Force redoing already done experiments")
+  parser.add_option("-r", "--rel",
+                   action="store_true", dest="rel", default=False,
+                   help="feature relative frequency")
+  (options, args) = parser.parse_args()
+  return options
+
 def get_args_rstr():
   from optparse import OptionParser
   parser = OptionParser()
@@ -55,6 +76,12 @@ def get_args_rstr():
   parser.add_option("-s", "--supportmax",
                    dest="supportmax", default=0.6,
                    help="Support size (between 0 and 1)")
+  parser.add_option("-r", "--relative",
+                   action="store_true", dest="relative", default=False,
+                   help="Use (or not) a relative count for the substring")
+  parser.add_option("-i", "--tfidf",
+                   action="store_true", dest="tfidf", default=False,
+                   help="Use (or not) tf-idf score (only if relative is True)")
 
   (options, args) = parser.parse_args()
   return options
@@ -113,13 +140,16 @@ def write_utf8(path,out):
   w.close()
 
 
-def format_output(IDs, pred):
+def format_output(IDs, pred, without_last_elm=False):
   if "not_title" in pred:
     pred = ["0" if x=="not_title" else "1" for x in pred]
 #    pred = ["1" for x in pred if x=="is_title"]
   paires = ["ID\tlabel"]
   IDs = [re.split("/", x)[-1] for x in IDs]
   paires += ["%s\t%s"%(IDs[i], pred[i]) for i in range(len(IDs))]
+  if without_last_elm == True:
+    IDs = IDs[:len(IDs) - 1]
+    paires = paires[:len(paires) - 1]
   out = "\n".join(paires)
   return out 
 
@@ -139,14 +169,6 @@ def open_json(path):
   f = open(path)
   data = json.load(f)
   f.close()
-  '''
-  d = {}
-  cpt = 0
-  for elm in data.items():
-    d[elm[0]] = elm[1]
-    cpt += 1
-    if cpt > 1500:
-      break'''
   return data
 
 def get_score(y_test, y_pred):
