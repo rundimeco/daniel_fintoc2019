@@ -1,3 +1,8 @@
+=== FINSBD 2020 ===
+To come
+
+=== FINTOC 2019 ===
+
 Usage : 
   use_model.py
     the predict_title function takes as input a python dictionary with the following informations:
